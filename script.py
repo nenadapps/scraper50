@@ -4,6 +4,7 @@ from random import randint
 from random import shuffle
 import requests
 from time import sleep
+import re
 
 base_url = 'https://www.psgpostagestampsgalore.co.uk'
 
@@ -41,7 +42,9 @@ def get_details(url, category, subcategory):
         stamp['price'] = None  
        
     try:
-        raw_text = html.select('.description')[1].get_text().strip()
+        raw_text_html = str(html.select('.description')[1])
+        raw_text_html = raw_text_html.replace('</p>', ' ')
+        raw_text = re.sub(r'<.*?>','',raw_text_html).strip()
         stamp['raw_text'] = raw_text
     except:
         stamp['raw_text'] = None 
